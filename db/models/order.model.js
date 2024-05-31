@@ -24,14 +24,14 @@ const OrderSchema = {
   },
   total: {
     type: DataTypes.VIRTUAL,
-    /* get() {
+    get() {
       if (this.items.length > 0) {
         return this.items.reduce((total, item) => {
           return total + item.price * item.OrderProduct.amount;
         }, 0);
       }
       return 0;
-    }, */
+    },
     get() {
       if (Array.isArray(this.items) && this.items.length > 0) {
         return this.items.reduce((total, item) => {
