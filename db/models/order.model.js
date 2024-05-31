@@ -33,7 +33,6 @@ const OrderSchema = {
       return 0;
     }, */
     get() {
-      // Comprueba si this.items está definido y es un array
       if (Array.isArray(this.items) && this.items.length > 0) {
         return this.items.reduce((total, item) => {
           return total + item.price * item.OrderProduct.amount;
