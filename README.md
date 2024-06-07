@@ -1,5 +1,5 @@
 ## 💜MyStore
-MyStore es una API personalizada basada en REST y PostgreSQL, diseñada específicamente para una tienda de hamburguesas y hotdogs. Este proyecto es el resultado del "Curso de Backend con NodeJS, REST API, Express y PostgreSQL". La API ofrece una amplia gama de funcionalidades y soporta los métodos HTTP como GET, POST, PUT, PATCH y DELETE en diversos endpoints.
+MyStore es una API personalizada basada en REST y PostgreSQL. Este proyecto es el resultado del "Curso de Backend con Node.js: API REST con Express.js", "Curso de Backend con NodeJS, REST API, Express y PostgreSQL" y "Curso de Backend con Node.js: Autenticación con Passport.js y JWT". La API ofrece una amplia gama de funcionalidades y soporta los métodos HTTP como GET, POST, PUT, PATCH y DELETE en diversos endpoints.
 
 ## 📙Requisitos de ejecución
 
@@ -12,4 +12,4 @@ npm start
 
 ## 📌Estado del proyecto
 
-  Culminado
+En proceso
