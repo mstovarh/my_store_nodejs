@@ -65,6 +65,16 @@ router.patch(
   },
 );
 
+router.get('/items/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const items = await service.findItemByOrderId(id);
+    res.json(items);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post(
   '/add-item',
   validatorHandler(addItemSchema, 'body'),
@@ -78,5 +88,29 @@ router.post(
     }
   },
 );
+
+router.delete(
+  '/:id',
+  validatorHandler(getOrderSchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const order = await service.delete(id);
+      res.status(201).json({ id });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+router.delete('/items/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const order = await service.deleteItemByOrderId(id);
+    res.status(201).json({ id });
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;

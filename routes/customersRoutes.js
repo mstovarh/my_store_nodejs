@@ -13,7 +13,7 @@ const service = new CustomerService();
 
 router.get('/', async (req, res, next) => {
   try {
-    res.json(await service.find());
+    res.status(200).json(await service.find());
   } catch (error) {
     next(error);
   }
@@ -26,7 +26,7 @@ router.get(
     try {
       const { id } = req.params;
       const customer = await service.findOne(id);
-      res.json(customer);
+      res.status(200).json(customer);
     } catch (error) {
       next(error);
     }
@@ -39,7 +39,8 @@ router.post(
   async (req, res, next) => {
     try {
       const body = req.body;
-      res.status(201).json(await service.create(body));
+      const newCustomer = await service.create(body);
+      res.status(201).json(newCustomer);
     } catch (error) {
       next(error);
     }

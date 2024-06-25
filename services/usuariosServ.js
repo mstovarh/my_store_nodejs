@@ -9,7 +9,7 @@ class UserService {
   async create(data) {
     const hash = await bcrypt.hash(data.password, 10);
     const newUser = await models.User.create({ ...data, password: hash });
-    newUser.dataValues.password = undefined;
+    delete newUser.dataValues.password;
     return newUser;
   }
 
@@ -18,7 +18,7 @@ class UserService {
       include: ['customer'],
     });
     users.forEach((user) => {
-      user.dataValues.password = undefined;
+      delete user.dataValues.password;
     });
     return users;
   }
@@ -28,9 +28,6 @@ class UserService {
     const user = await models.User.findOne({
       where: { email },
     });
-    if (user) {
-      user.dataValues.password = undefined;
-    }
     //console.log('findByEmail result:', rta);
     return user;
   }
@@ -40,7 +37,7 @@ class UserService {
     if (!user) {
       throw boom.notFound('user not found');
     }
-    user.dataValues.password = undefined;
+    delete user.dataValues.password;
     return user;
   }
 
@@ -50,7 +47,7 @@ class UserService {
       changes.password = await bcrypt.hash(changes.password, 10);
     }
     const updatedUser = await user.update(changes);
-    updatedUser.dataValues.password = undefined;
+    delete updatedUser.dataValues.password;
     return updatedUser;
   }
 

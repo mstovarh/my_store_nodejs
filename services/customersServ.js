@@ -1,29 +1,49 @@
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
-const { da } = require('@faker-js/faker');
+const bcrypt = require('bcrypt');
+//const { da } = require('@faker-js/faker');
 class CustomerService {
   constructor() {}
   async find() {
-    const rta = await models.Customer.findAll({ include: ['user'] });
-    return rta;
+    const customers = await models.Customer.findAll({ include: ['user'] });
+    customers.forEach((customer) => {
+      delete customer.dataValues.password;
+    });
+    return customers;
   }
   async findOne(id) {
-    const user = await models.Customer.findByPk(id);
-    if (!user) {
+    const customer = await models.Customer.findByPk(id);
+    if (!customer) {
       throw boom.notFound('customer not found');
     }
-    return user;
+    delete customer.dataValues.password;
+    return customer;
   }
   async create(data) {
-    const newCustomer = await models.Customer.create(data, {
+    const hash = await bcrypt.hash(data.user.password, 10);
+    const newData = {
+      ...data,
+      user: {
+        ...data.user,
+        password: hash,
+      },
+    };
+    const newCustomer = await models.Customer.create(newData, {
       include: ['user'],
     });
+    delete newCustomer.dataValues.user.password;
     return newCustomer;
   }
   async update(id, changes) {
-    const model = await this.findOne(id);
-    const rta = await model.update(changes, { include: ['user'] });
-    return rta;
+    const customer = await this.findOne(id);
+    if (changes.password) {
+      changes.password = await bcrypt.hash(changes.password, 10);
+    }
+    const updatedCustomer = await customer.update(changes, {
+      include: ['user'],
+    });
+    delete updatedCustomer.dataValues.password;
+    return updatedCustomer;
   }
   async delete(id) {
     const model = await this.findOne(id);
